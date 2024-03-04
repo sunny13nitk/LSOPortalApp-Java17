@@ -12,46 +12,46 @@
   "tenant-mode": "dedicated",
   "scopes": [
     {
-      "name": "$XSAPPNAME.SVC_ESM_EMPLOYEE_LSO",
-      "description": "LSO Employees"
+      "name": "$XSAPPNAME.SVC_ESM_EMPLOYEE_LSO_PORTAL",
+      "description": "LSO Portal - Employees"
     },
     {
-      "name": "$XSAPPNAME.SVC_ESM_CONTRACTOR_LSO",
-      "description": "LSO Externals"
+      "name": "$XSAPPNAME.SVC_ESM_CONTRACTOR_LSO_PORTAL",
+      "description": "LSO Portal - Externals"
     }
   ],
   "attributes": [],
   "role-templates": [
     {
-      "name": "SVC_ESM_EMPLOYEE_LSO",
+      "name": "SVC_ESM_EMPLOYEE_LSO_PORTAL",
       "description": "generated",
       "scope-references": [
-        "$XSAPPNAME.SVC_ESM_EMPLOYEE_LSO"
+        "$XSAPPNAME.SVC_ESM_EMPLOYEE_LSO_PORTAL"
       ],
       "attribute-references": []
     },
     {
-      "name": "SVC_ESM_CONTRACTOR_LSO",
+      "name": "SVC_ESM_CONTRACTOR_LSO_PORTAL",
       "description": "generated",
       "scope-references": [
-        "$XSAPPNAME.SVC_ESM_CONTRACTOR_LSO"
+        "$XSAPPNAME.SVC_ESM_CONTRACTOR_LSO_PORTAL"
       ],
       "attribute-references": []
     }
   ],
   "role-collections": [
     {
-      "name": "SVC_ESM_EMPLOYEE_LSO",
-      "description": "LSO Employees - I/D/C Users Role Collection",
+      "name": "SVC_ESM_EMPLOYEE_LSO_PORTAL",
+      "description": "LSO Portal Access for Employees - I/D/C Users",
       "role-template-references": [
-        "$XSAPPNAME.SVC_ESM_EMPLOYEE_LSO"
+        "$XSAPPNAME.SVC_ESM_EMPLOYEE_LSO_PORTAL"
       ]
     },
     {
-      "name": "SVC_ESM_CONTRACTOR_LSO",
-      "description": "LSO Externals - P/S Users Role Collection",
+      "name": "SVC_ESM_CONTRACTOR_LSO_PORTAL",
+      "description": "LSO Externals - P/S Users",
       "role-template-references": [
-        "$XSAPPNAME.SVC_ESM_CONTRACTOR_LSO"
+        "$XSAPPNAME.SVC_ESM_CONTRACTOR_LSO_PORTAL"
       ]
     }
   ]

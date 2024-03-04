@@ -11,7 +11,7 @@ applications:
     JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 17.0.+ }}'
     IAS_XSUAA_XCHANGE_ENABLED: true  
   services:  
-    - esmapi-xsuaa
+    - lsoportal-xsuaa
     - esmapi-hana
     - iESM-destination-services
 

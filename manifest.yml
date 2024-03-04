@@ -24,7 +24,7 @@ applications:
   routes:
     - route: lso-portal-app.cfapps.eu10-004.hana.ondemand.com
   services:
-    - esmapi-xsuaa
+    - lsoportal-xsuaa
   env:
     destinations: >
       [

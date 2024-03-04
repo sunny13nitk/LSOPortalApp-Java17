@@ -8,9 +8,11 @@ applications:
   services:  
     - esmapi-xsuaa
     - esmapi-hana
+    - iESM-destination-services
   env:
-    IAS_XSUAA_XCHANGE_ENABLED: true
     SEND_XFRAMEOPTIONS: false
+    JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 17.0.+ }}'
+    IAS_XSUAA_XCHANGE_ENABLED: true
 
 # Application Router as web server
 - name: app-lso-portal
@@ -22,6 +24,7 @@ applications:
     - route: lso-portal-app.cfapps.eu10-004.hana.ondemand.com
   services:
     - esmapi-xsuaa
+    - iESM-destination-services
   env:
     destinations: >
       [

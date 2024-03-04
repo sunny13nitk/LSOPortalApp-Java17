@@ -5,14 +5,15 @@ applications:
   routes:
     - route: lso-portal-srv.cfapps.eu10-004.hana.ondemand.com
   path: srv/target/srv-exec.jar  
+  buildpacks:
+    - java_buildpack
+  env:
+    JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 17.0.+ }}'
+    IAS_XSUAA_XCHANGE_ENABLED: true  
   services:  
     - esmapi-xsuaa
     - esmapi-hana
     - iESM-destination-services
-  env:
-    SEND_XFRAMEOPTIONS: false
-    JBP_CONFIG_OPEN_JDK_JRE: '{jre: { version: 17.0.+ }}'
-    IAS_XSUAA_XCHANGE_ENABLED: true
 
 # Application Router as web server
 - name: app-lso-portal
@@ -24,13 +25,12 @@ applications:
     - route: lso-portal-app.cfapps.eu10-004.hana.ondemand.com
   services:
     - esmapi-xsuaa
-    - iESM-destination-services
   env:
     destinations: >
       [
         {
           "name":"token-destination",
-          "url":"https://lso-portal-srv.cfapps.eu10-004.hana.ondemand.com ",
+          "url":"https://lso-portal-srv.cfapps.eu10-004.hana.ondemand.com",
           "forwardAuthToken": true
         },
         {
@@ -49,4 +49,3 @@ applications:
           "forwardAuthToken": false
         } 
       ]
-...

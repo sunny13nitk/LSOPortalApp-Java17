@@ -50,8 +50,15 @@ public class GC_Constants
 
     public static final String gc_Dest_SrvCloud_Internals = "BTP_SVC_INT";// Service Cloud Destination for Internal
                                                                           // (I/D/C) Users
-
     public static final String gc_Dest_SrvCloud_Externals = "BTP_SVC_EXT";// Service Cloud Destination for External
                                                                           // (P/S) Users
+
+    public static final String gc_TokenAttrib_ClientID = "client id";
+    public static final String gc_TokenAttrib_UserName = "User Name";
+    public static final String gc_TokenAttrib_SAPGlobalID = "Global SAP user id";
+    public static final String gc_TokenAttrib_LastName = "family name";
+    public static final String gc_TokenAttrib_FirstName = "given name";
+    public static final String gc_TokenAttrib_Email = "email";
+    public static final String gc_TokenAttrib_scopes = "(Xsuaa) scopes";
 
 }

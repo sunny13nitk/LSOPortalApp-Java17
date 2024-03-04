@@ -1,7 +1,9 @@
 package com.sap.cap.esmapi.utilities.pojos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.sap.cap.esmapi.ui.pojos.TY_CaseEditFormAsync;
 import com.sap.cap.esmapi.ui.pojos.TY_CaseEdit_Form;
@@ -18,6 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TY_UserSessionInfo
 {
+    private Map<String, String> tokenDetails = new HashMap<>();
     private TY_UserDetails userDetails;
     private TY_FormSubmissions formSubmissions = new TY_FormSubmissions();
     private TY_CaseFormAsync currentForm4Submission;

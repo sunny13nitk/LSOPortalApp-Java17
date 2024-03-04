@@ -16,7 +16,7 @@ import com.sap.cap.esmapi.utilities.pojos.TY_UserDetails;
 import com.sap.cap.esmapi.utilities.pojos.TY_UserSessionInfo;
 import com.sap.cap.esmapi.utilities.pojos.Ty_UserAccountEmployee;
 import com.sap.cap.esmapi.utilities.srvCloudApi.destination.pojos.TY_DestinationProps;
-import com.sap.cloud.security.xsuaa.token.Token;
+import com.sap.cloud.security.token.Token;
 
 public interface IF_UserSessionSrv
 {

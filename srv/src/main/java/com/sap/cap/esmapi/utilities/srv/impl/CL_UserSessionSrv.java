@@ -21,6 +21,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.annotation.SessionScope;
@@ -64,7 +65,9 @@ import com.sap.cap.esmapi.utilities.srvCloudApi.srv.intf.IF_SrvCloudAPI;
 import com.sap.cap.esmapi.vhelps.pojos.TY_KeyValue;
 import com.sap.cap.esmapi.vhelps.srv.intf.IF_VHelpLOBUIModelSrv;
 import com.sap.cds.services.request.UserInfo;
-import com.sap.cloud.security.xsuaa.token.Token;
+import com.sap.cloud.security.token.AccessToken;
+import com.sap.cloud.security.token.Token;
+import com.sap.cloud.security.token.TokenClaims;
 
 import cds.gen.db.esmlogs.Esmappmsglog;
 import lombok.extern.slf4j.Slf4j;
@@ -124,6 +127,7 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
     private TY_UserSessionInfo userSessInfo;
 
     @Override
+    @PreAuthorize("isAuthenticated()")
     public TY_UserDetails getUserDetails(Token token) throws EX_ESMAPI
     {
 
@@ -141,9 +145,9 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
             if (!userInfo.isAuthenticated())
             {
                 log.error(msgSrc.getMessage("UNAUTHENTICATED_ACCESS", new Object[]
-                { token.getLogonName() }, Locale.ENGLISH));
+                { token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName) }, Locale.ENGLISH));
                 throw new EX_ESMAPI(msgSrc.getMessage("UNAUTHENTICATED_ACCESS", new Object[]
-                { token.getLogonName() }, Locale.ENGLISH));
+                { token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName) }, Locale.ENGLISH));
             }
 
             else
@@ -172,50 +176,75 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
                     userDetails.setRoles(userInfo.getRoles().stream().collect(Collectors.toList()));
                     Ty_UserAccountEmployee usAccConEmpl = new Ty_UserAccountEmployee();
 
-                    if (StringUtils.hasText(token.getLogonName()) && StringUtils.hasText(token.getGivenName())
-                            && StringUtils.hasText(token.getFamilyName()) && StringUtils.hasText(token.getEmail()))
+                    if (StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName))
+                            && StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_FirstName))
+                            && StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_LastName))
+                            && StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_Email)))
                     {
-                        log.info("Logged In User via Token : " + token.getLogonName());
-                        log.info("User Name : " + token.getGivenName() + " " + token.getFamilyName());
-                        log.info("User Email : " + token.getEmail());
+                        userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_ClientID, token.getClientId());
+                        userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_UserName,
+                                token.getClaimAsString(TokenClaims.USER_NAME));
+                        userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_FirstName,
+                                token.getClaimAsString(TokenClaims.GIVEN_NAME));
+
+                        userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_LastName,
+                                token.getClaimAsString(TokenClaims.FAMILY_NAME));
+
+                        userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_Email,
+                                token.getClaimAsString(TokenClaims.EMAIL));
+
+                        log.info("Logged In User via Token : "
+                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_UserName));
+                        log.info("User Name : "
+                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_FirstName) + " "
+                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_LastName));
+                        log.info("User Email : "
+                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_Email));
 
                     }
                     else
                     {
                         log.info("Token Does not contain Complete Information");
-                        log.info(token.getLogonName() + " : " + token.getFamilyName() + token.getGivenName() + "Email: "
-                                + token.getEmail());
+                        log.info(token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName) + " : "
+                                + token.getClaimAsString(TokenClaims.FAMILY_NAME)
+                                + token.getClaimAsString(TokenClaims.GIVEN_NAME) + "Email: "
+                                + token.getClaimAsString(TokenClaims.EMAIL));
                     }
 
-                    usAccConEmpl.setUserId(token.getLogonName());
-                    usAccConEmpl.setUserName(token.getGivenName() + " " + token.getFamilyName());
+                    usAccConEmpl.setUserId(userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_UserName));
+                    usAccConEmpl.setUserName(userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_FirstName)
+                            + " " + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_LastName));
 
                     // External/Internal User Classification
-                    if (StringUtils.hasText(token.getLogonName()))
+                    if (StringUtils.hasText(userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_UserName)))
                     {
-                        if (!token.getLogonName().matches(rlConfig.getInternalUsersRegex()))
+                        if (!userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_UserName)
+                                .matches(rlConfig.getInternalUsersRegex()))
                         {
+                            log.info("User Marked as External User!");
                             usAccConEmpl.setExternal(true);
                             if (dS != null)
                             {
                                 if (StringUtils.hasText(dS.getDestExternal()))
                                 {
                                     usAccConEmpl.setDestination(dS.getDestExternal());
+                                    log.info("External Destination set up for External User : " + dS.getDestExternal());
                                 }
                             }
-                            usAccConEmpl.setDestination(newAccountID);
-                            log.info("User Marked as External User!");
+
                         }
                         else
                         {
+                            log.info("User Marked as Internal User!");
                             if (dS != null)
                             {
                                 if (StringUtils.hasText(dS.getDestInternal()))
                                 {
                                     usAccConEmpl.setDestination(dS.getDestInternal());
+                                    log.info("Internal Destination set up for Internal User : " + dS.getDestInternal());
                                 }
                             }
-                            log.info("User Marked as Internal User!");
+
                         }
 
                         // Initialize Destination Service
@@ -243,7 +272,7 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
                         }
                     }
 
-                    usAccConEmpl.setUserEmail(token.getEmail());
+                    usAccConEmpl.setUserEmail(userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_Email));
                     log.info("Scanning Account for Email Address : " + usAccConEmpl.getUserEmail());
                     usAccConEmpl.setAccountId(srvCloudApiSrv.getAccountIdByUserEmail(usAccConEmpl.getUserEmail(),
                             userSessInfo.getDestinationProps()));

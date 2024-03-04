@@ -6,7 +6,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.annotation.SessionScope;
 
 import com.sap.cap.esmapi.exceptions.EX_ESMAPI;
 import com.sap.cap.esmapi.utilities.constants.GC_Constants;
@@ -31,7 +30,7 @@ public class CL_DestinationService implements IF_DestinationService
     private TY_DestinationProps destinationProps;
 
     private static final String prop_URL = "URL";
-    private static final String prop_Token = "authTokens";
+    private static final String prop_Token = "cloudsdk.authTokens";
     private static final String cons_value = ", value=";
     private static final String cons_bracketClose = "\\)";
 

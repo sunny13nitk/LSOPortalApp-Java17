@@ -1,9 +1,9 @@
 applications:
-- name: esmapi
+- name: lso-portal
   instances: 1
   memory: 1024M
   routes:
-    - route: esmapi-dev.cfapps.eu10-004.hana.ondemand.com
+    - route: lso-portal-srv.cfapps.eu10-004.hana.ondemand.com
   path: srv/target/srv-exec.jar  
   services:  
     - esmapi-xsuaa
@@ -13,13 +13,13 @@ applications:
     SEND_XFRAMEOPTIONS: false
 
 # Application Router as web server
-- name: app-esmapi
+- name: app-lso-portal
   path: app
   buildpacks:
     - nodejs_buildpack
-  memory: 128M
+  memory: 256M
   routes:
-    - route: esmapi-devapp.cfapps.eu10-004.hana.ondemand.com
+    - route: lso-portal-app.cfapps.eu10-004.hana.ondemand.com
   services:
     - esmapi-xsuaa
   env:
@@ -27,7 +27,7 @@ applications:
       [
         {
           "name":"token-destination",
-          "url":"https://esmapi-dev.cfapps.eu10-004.hana.ondemand.com",
+          "url":"https://lso-portal-srv.cfapps.eu10-004.hana.ondemand.com ",
           "forwardAuthToken": true
         },
         {

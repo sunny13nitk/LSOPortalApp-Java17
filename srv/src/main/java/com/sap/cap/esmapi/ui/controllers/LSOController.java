@@ -39,10 +39,9 @@ import com.sap.cap.esmapi.utilities.pojos.TY_RLConfig;
 import com.sap.cap.esmapi.utilities.pojos.TY_UserESS;
 import com.sap.cap.esmapi.utilities.srv.intf.IF_SessAttachmentsService;
 import com.sap.cap.esmapi.utilities.srv.intf.IF_UserSessionSrv;
-import com.sap.cap.esmapi.utilities.srvCloudApi.destination.intf.IF_DestinationService;
 import com.sap.cap.esmapi.vhelps.srv.intf.IF_VHelpLOBUIModelSrv;
 import com.sap.cds.services.request.UserInfo;
-import com.sap.cloud.security.xsuaa.token.Token;
+import com.sap.cloud.security.token.Token;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -81,16 +80,10 @@ public class LSOController
     @Autowired
     private TY_RLConfig rlConfig;
 
-    @Autowired
-    private IF_DestinationService destSrv;
-
     private final String caseListVWRedirect = "redirect:/lso/";
     private final String caseFormErrorRedirect = "redirect:/lso/errForm/";
-    private final String caseFormView = "caseFormLSO";
     private final String caseFormViewLXSS = "caseFormLSOLXSS";
-    private final String caseFormReply = "caseFormReplyLSO";
     private final String caseFormReplyLXSS = "caseFormReplyLSOLXSS";
-    private final String lsoCaseListView = "lsoCasesListView";
     private final String lsoCaseListViewLXSS = "lsoCasesListViewLXSS";
     private final String caseFormReplyErrorRedirect = "redirect:/lso/errCaseReply/";
 

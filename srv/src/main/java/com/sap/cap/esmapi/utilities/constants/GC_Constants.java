@@ -42,9 +42,9 @@ public class GC_Constants
 
     public static final String gc_LocalProfile = "local";
 
-    public static final String gc_role_employee_lso = "SVC_ESM_EMPLOYEE_LSO_PORTAL"; // I/D/C Users ARM Role
+    public static final String gc_role_employee_lso = "EmployeeRole"; // I/D/C Users ARM Role
 
-    public static final String gc_role_contractor_lso = "SVC_ESM_CONTRACTOR_LSO_PORTAL"; // P/S User(s)
+    public static final String gc_role_contractor_lso = "ExternalRole"; // P/S User(s)
 
     public static final String gc_AttachmentTypeInternal = "ZINT"; // Internal Attachment Type
 

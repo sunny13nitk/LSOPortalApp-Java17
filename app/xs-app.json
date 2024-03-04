@@ -54,8 +54,7 @@
       "source": "^/login(.*)",
       "target": "/login$1",
       "destination": "token-destination",
-      "authenticationType": "xsuaa",
-      "cacheControl": "no-cache, no-store, must-revalidate"
+      "authenticationType": "xsuaa"
     }
   ]
 }

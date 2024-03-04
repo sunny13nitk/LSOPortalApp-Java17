@@ -110,7 +110,6 @@ public class AppSecurityConfig
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz ->
                            authz
-                                .anyRequest().authenticated()
                                 .requestMatchers("/login/**").permitAll()
                                 .requestMatchers("/static/**").permitAll()
                                 .requestMatchers("/web-component.js/**").permitAll()

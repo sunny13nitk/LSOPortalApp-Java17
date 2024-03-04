@@ -113,8 +113,9 @@ public class AppSecurityConfig
                                 .requestMatchers("/login/**").permitAll()
                                 .requestMatchers("/static/**").permitAll()
                                 .requestMatchers("/web-component.js/**").permitAll()
-                                .requestMatchers("/lso/**")
-                                            .hasAnyAuthority(GC_Constants.gc_role_employee_lso, GC_Constants.gc_role_contractor_lso)
+                                .requestMatchers("/lso/**").authenticated()
+                                //Disable Security for TEsting
+                                // .hasAnyAuthority(GC_Constants.gc_role_employee_lso, GC_Constants.gc_role_contractor_lso)
                                 .anyRequest().denyAll())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt

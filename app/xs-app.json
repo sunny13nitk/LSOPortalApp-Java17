@@ -6,11 +6,19 @@
       "source": "^/ess",
       "target": "/ess",
       "destination": "token-destination",
-      "authenticationType": "none"
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
     },
     {
       "source": "^/lso",
       "target": "/lso",
+      "destination": "token-destination",
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/post",
+      "target": "/post",
       "destination": "token-destination",
       "authenticationType": "none"
     },
@@ -24,7 +32,8 @@
       "source": "^/api",
       "target": "/api",
       "destination": "token-destination",
-      "authenticationType": "xsuaa"
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
     },
     {
       "source": "^/common-navigation-api/(.*)$",
@@ -54,7 +63,8 @@
       "source": "^/login(.*)",
       "target": "/login$1",
       "destination": "token-destination",
-      "authenticationType": "xsuaa"
+      "authenticationType": "xsuaa",
+      "cacheControl": "no-cache, no-store, must-revalidate"
     }
   ]
 }

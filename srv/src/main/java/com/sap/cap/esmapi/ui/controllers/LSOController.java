@@ -1,9 +1,13 @@
 package com.sap.cap.esmapi.ui.controllers;
 
+import static com.sap.cloud.security.config.Service.XSUAA;
+
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -41,7 +45,9 @@ import com.sap.cap.esmapi.utilities.srv.intf.IF_SessAttachmentsService;
 import com.sap.cap.esmapi.utilities.srv.intf.IF_UserSessionSrv;
 import com.sap.cap.esmapi.vhelps.srv.intf.IF_VHelpLOBUIModelSrv;
 import com.sap.cds.services.request.UserInfo;
+import com.sap.cloud.security.token.AccessToken;
 import com.sap.cloud.security.token.Token;
+import com.sap.cloud.security.token.TokenClaims;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -93,6 +99,7 @@ public class LSOController
 
         if (token != null && userInfo != null && userSessSrv != null)
         {
+
             // Only Authenticated user via IDP
             if (userInfo.isAuthenticated())
             {

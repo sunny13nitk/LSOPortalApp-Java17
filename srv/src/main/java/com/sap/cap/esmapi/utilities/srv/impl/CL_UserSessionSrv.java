@@ -145,9 +145,9 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
             if (!userInfo.isAuthenticated())
             {
                 log.error(msgSrc.getMessage("UNAUTHENTICATED_ACCESS", new Object[]
-                { token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName) }, Locale.ENGLISH));
+                { token.getClaimAsString(TokenClaims.USER_NAME) }, Locale.ENGLISH));
                 throw new EX_ESMAPI(msgSrc.getMessage("UNAUTHENTICATED_ACCESS", new Object[]
-                { token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName) }, Locale.ENGLISH));
+                { token.getClaimAsString(TokenClaims.USER_NAME) }, Locale.ENGLISH));
             }
 
             else
@@ -176,10 +176,10 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
                     userDetails.setRoles(userInfo.getRoles().stream().collect(Collectors.toList()));
                     Ty_UserAccountEmployee usAccConEmpl = new Ty_UserAccountEmployee();
 
-                    if (StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName))
-                            && StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_FirstName))
-                            && StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_LastName))
-                            && StringUtils.hasText(token.getClaimAsString(GC_Constants.gc_TokenAttrib_Email)))
+                    if (StringUtils.hasText(token.getClaimAsString(TokenClaims.USER_NAME))
+                            && StringUtils.hasText(token.getClaimAsString(TokenClaims.GIVEN_NAME))
+                            && StringUtils.hasText(token.getClaimAsString(TokenClaims.FAMILY_NAME))
+                            && StringUtils.hasText(token.getClaimAsString(TokenClaims.EMAIL)))
                     {
                         userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_ClientID, token.getClientId());
                         userSessInfo.getTokenDetails().put(GC_Constants.gc_TokenAttrib_UserName,
@@ -194,18 +194,16 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
                                 token.getClaimAsString(TokenClaims.EMAIL));
 
                         log.info("Logged In User via Token : "
-                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_UserName));
-                        log.info("User Name : "
-                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_FirstName) + " "
-                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_LastName));
-                        log.info("User Email : "
-                                + userSessInfo.getTokenDetails().get(GC_Constants.gc_TokenAttrib_Email));
+                                + userSessInfo.getTokenDetails().get(TokenClaims.USER_NAME));
+                        log.info("User Name : " + userSessInfo.getTokenDetails().get(TokenClaims.GIVEN_NAME) + " "
+                                + userSessInfo.getTokenDetails().get(TokenClaims.FAMILY_NAME));
+                        log.info("User Email : " + userSessInfo.getTokenDetails().get(TokenClaims.EMAIL));
 
                     }
                     else
                     {
                         log.info("Token Does not contain Complete Information");
-                        log.info(token.getClaimAsString(GC_Constants.gc_TokenAttrib_UserName) + " : "
+                        log.info(token.getClaimAsString(TokenClaims.USER_NAME) + " : "
                                 + token.getClaimAsString(TokenClaims.FAMILY_NAME)
                                 + token.getClaimAsString(TokenClaims.GIVEN_NAME) + "Email: "
                                 + token.getClaimAsString(TokenClaims.EMAIL));

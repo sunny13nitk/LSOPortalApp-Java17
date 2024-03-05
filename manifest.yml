@@ -3,7 +3,7 @@ applications:
   instances: 1
   memory: 1024M
   routes:
-    - route: lso-portal-srv.cfapps.eu10-004.hana.ondemand.com
+    - route: lso-portal-be.cfapps.eu10-004.hana.ondemand.com
   path: srv/target/srv-exec.jar  
   buildpacks:
     - java_buildpack
@@ -22,7 +22,7 @@ applications:
     - nodejs_buildpack
   memory: 256M
   routes:
-    - route: lso-portal-app.cfapps.eu10-004.hana.ondemand.com
+    - route: app-lso-portal.cfapps.eu10-004.hana.ondemand.com
   services:
     - lsoportal-xsuaa
   env:
@@ -30,7 +30,7 @@ applications:
       [
         {
           "name":"token-destination",
-          "url":"https://lso-portal-srv.cfapps.eu10-004.hana.ondemand.com",
+          "url":"https://lso-portal-be.cfapps.eu10-004.hana.ondemand.com",
           "forwardAuthToken": true
         },
         {
@@ -49,3 +49,4 @@ applications:
           "forwardAuthToken": false
         } 
       ]
+ 

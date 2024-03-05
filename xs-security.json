@@ -26,16 +26,14 @@
       "description": "generated",
       "scope-references": [
         "$XSAPPNAME.EmployeeRole"
-      ],
-      "attribute-references": []
+      ]
     },
     {
       "name": "LSOPORTAL-CTR",
       "description": "generated",
       "scope-references": [
         "$XSAPPNAME.ExternalRole"
-      ],
-      "attribute-references": []
+      ]
     }
   ],
   "role-collections": [

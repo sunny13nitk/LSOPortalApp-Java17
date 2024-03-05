@@ -1227,6 +1227,7 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
                     // {
                     try
                     {
+                        log.info("Getting Case details from Service Cloud...");
                         TY_CaseDetails caseDetails = srvCloudApiSrv.getCaseDetails4Case(caseESS.getGuid(),
                                 userSessInfo.getDestinationProps());
                         // --- Filter by External Note Type(s) only

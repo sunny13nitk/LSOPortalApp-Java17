@@ -878,6 +878,7 @@ public class LSOController
     @GetMapping("/caseDetails/{caseID}")
     public String getCaseDetails(@PathVariable String caseID, Model model)
     {
+        log.info("Navigating to case with UUID : " + caseID);
         if (StringUtils.hasText(caseID))
         {
             if (userSessSrv != null)

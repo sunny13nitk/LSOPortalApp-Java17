@@ -40,7 +40,7 @@ import com.sap.cloud.security.token.TokenClaims;
 public class AppSecurityConfig
 {
 
-    // @Autowired
+    @Autowired
     Converter<Jwt, AbstractAuthenticationToken> authConverter; // Required only when Xsuaa is used
 
     /*

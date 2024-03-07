@@ -6,12 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,6 +32,7 @@ import com.sap.cloud.security.spring.token.authentication.AuthenticationToken;
 import com.sap.cloud.security.token.TokenClaims;
 
 @Configuration
+@Profile(GC_Constants.gc_BTPProfile)
 @EnableWebSecurity()
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 @PropertySource(factory = IdentityServicesPropertySourceFactory.class, ignoreResourceNotFound = true, value =
@@ -39,40 +40,8 @@ import com.sap.cloud.security.token.TokenClaims;
 public class AppSecurityConfig
 {
 
-    @Autowired
+    // @Autowired
     Converter<Jwt, AbstractAuthenticationToken> authConverter; // Required only when Xsuaa is used
-
-    @Bean
-    @Profile(GC_Constants.gc_LocalProfile)
-    public SecurityFilterChain appFilterChain(HttpSecurity http) throws Exception
-    {
-        // @formatter:off
-        /*
-         * ----------- Local Testing --------------------
-        */
-
-
-         http
-                .logout((logout) -> logout.logoutSuccessUrl("/logout/").permitAll())
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authz ->
-                           authz
-                                .requestMatchers("/login/**").permitAll()
-                                .requestMatchers("/static/**").permitAll()
-                                .requestMatchers("/api/*").permitAll()
-                                .requestMatchers("/esslocal/*").permitAll()
-                                .requestMatchers("/poclocal/*").permitAll()     
-                                .anyRequest().denyAll())
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .jwtAuthenticationConverter(new MyCustomHybridTokenAuthenticationConverter()))); // Adjust the converter to represent your use case
-                                            // Use MyCustomHybridTokenAuthenticationConverter when IAS and XSUAA is used
-                                            // Use MyCustomIasTokenAuthenticationConverter when only IAS is used
-        // @formatter:on
-        return http.build();
-
-    }
 
     /*
      * WEB REsources Whitelisting

@@ -909,13 +909,13 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
             /*
              * Test with Existing Employee
              */
-            // String userEmail = "sunny.bhardwaj@sap.com";
-            // String userId = "I057386";
-            // String userName = "Sunny Bhardwaj";
+            String userEmail = "sunny.bhardwaj@sap.com";
+            String userId = "I057386";
+            String userName = "Sunny Bhardwaj";
 
-            // userDetails.setAuthenticated(true);
-            // //
-            // userDetails.setRoles(userInfo.getRoles().stream().collect(Collectors.toList()));
+            userDetails.setAuthenticated(true);
+            //
+            userDetails.setRoles(userInfo.getRoles().stream().collect(Collectors.toList()));
 
             /*
              * Test with Existing Employee
@@ -943,15 +943,15 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
              */
 
             /*
-             * Test with New Customer
+             * Test with New Customer //
              */
-            String userEmail = "narendramodi@gmail.com";
-            String userId = "SJH86775";
-            String userName = "Narendra Modi";
+            // String userEmail = "narendramodi@gmail.com";
+            // String userId = "SJH86775";
+            // String userName = "Narendra Modi";
 
-            userDetails.setAuthenticated(true);
-            //
-            userDetails.setRoles(userInfo.getRoles().stream().collect(Collectors.toList()));
+            // userDetails.setAuthenticated(true);
+            // //
+            // userDetails.setRoles(userInfo.getRoles().stream().collect(Collectors.toList()));
 
             /*
              * Test with New Customer

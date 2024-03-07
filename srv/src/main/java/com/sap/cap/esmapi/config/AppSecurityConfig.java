@@ -6,12 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,7 +44,7 @@ public class AppSecurityConfig
     Converter<Jwt, AbstractAuthenticationToken> authConverter; // Required only when Xsuaa is used
 
     /*
-     * WEB REsources Whitelisting
+     * WEB REsources Whitelisting for App
      */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() throws Exception

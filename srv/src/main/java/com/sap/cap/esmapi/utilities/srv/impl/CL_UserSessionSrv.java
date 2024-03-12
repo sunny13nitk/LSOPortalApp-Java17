@@ -744,6 +744,70 @@ public class CL_UserSessionSrv implements IF_UserSessionSrv
     }
 
     @Override
+    public boolean checkRateLimit()
+    {
+
+        boolean withinRateLimit = true;
+
+        // Rate Config Specified
+        if (rlConfig != null)
+        {
+            if (CollectionUtils.isNotEmpty(userSessInfo.getFormSubmissions().getFormSubmissions()))
+            {
+                // Current # Submissions more than or equals to # configurable - check
+                if (userSessInfo.getFormSubmissions().getFormSubmissions().size() >= rlConfig.getNumFormSubms())
+                {
+                    // Get Current Time Stamp
+                    Timestamp currTS = Timestamp.from(Instant.now());
+                    // Get Top N :latest Submissions since submissions are always appended
+                    // chronologically
+                    List<Timestamp> topNSubmList = new ArrayList<Timestamp>();
+                    topNSubmList = userSessInfo.getFormSubmissions().getFormSubmissions();
+                    Collections.sort(topNSubmList, Collections.reverseOrder());
+
+                    // Compare the Time difference from the latest one
+                    long secsElapsedLastSubmit = (currTS.getTime() - topNSubmList.get(0).getTime()) / 1000;
+                    // Last Submission elapsed time less than
+                    if (secsElapsedLastSubmit < rlConfig.getIntvSecs())
+                    {
+                        withinRateLimit = false;
+                        userSessInfo.setRateLimitBreached(true);
+                        log.error(msgSrc.getMessage("ERR_RATE_LIMIT", new Object[]
+                        { userSessInfo.getUserDetails().getUsAccEmpl().getUserId(),
+                                new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(currTS) }, Locale.ENGLISH));
+
+                        TY_Message logMsg = new TY_Message(userSessInfo.getUserDetails().getUsAccEmpl().getUserId(),
+                                currTS, EnumStatus.Error, EnumMessageType.ERR_RATELIMIT,
+                                userSessInfo.getUserDetails().getUsAccEmpl().getUserId(),
+                                msgSrc.getMessage("ERR_RATE_LIMIT", new Object[]
+                                { userSessInfo.getUserDetails().getUsAccEmpl().getUserId(),
+                                        new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(currTS) }, Locale.ENGLISH));
+                        // For Logging Framework
+                        userSessInfo.getMessagesStack().add(logMsg);
+                        // Instantiate and Fire the Event
+                        EV_LogMessage logMsgEvent = new EV_LogMessage(this, logMsg);
+                        applicationEventPublisher.publishEvent(logMsgEvent);
+
+                    }
+                    else
+                    {
+                        // Clear the older Submissions Details - Since now the clock is refreshed for
+                        // Current Session after Waiting
+                        userSessInfo.getFormSubmissions().getFormSubmissions().clear();
+                        withinRateLimit = true;
+                        userSessInfo.setRateLimitBreached(false);
+                    }
+
+                }
+
+            }
+
+        }
+
+        return withinRateLimit;
+    }
+
+    @Override
     public boolean isCaseFormValid()
     {
         boolean isValid = true;

@@ -104,7 +104,13 @@ public interface IF_UserSessionSrv
 
     public List<String> getSessionMessages();
 
+    // Check, Increment and Clear Session Count for Rate Limit. Server RoundTrip for
+    // Create Process
     public boolean isWithinRateLimit();
+
+    // Only Check Session for Rate Limit and Clear If Time Elapsed. No Session
+    // Increment - View Operations
+    public boolean checkRateLimit();
 
     public boolean isCaseFormValid();
 

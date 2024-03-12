@@ -576,7 +576,7 @@ public class LSOController
             {
                 // Before case form Inititation we must check the Rate Limit for the Current
                 // User Session --current Form Submission added for Rate Limit Evaulation
-                if (userSessSrv.isWithinRateLimit())
+                if (userSessSrv.checkRateLimit())
                 {
                     try
                     {
